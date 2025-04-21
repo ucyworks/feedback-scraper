@@ -12,7 +12,7 @@ class Review:
     """Class for representing a customer review."""
     rating: int
     owner: str
-    date: datetime
+    date: Optional[datetime]
     comment: str
     size: Optional[str] = None
     height: Optional[int] = None
@@ -36,5 +36,5 @@ class Review:
     
     def __str__(self) -> str:
         """String representation of a review."""
-        return (f"Review by {self.owner} on {self.date.strftime('%Y-%m-%d')}: "
+        return (f"Review by {self.owner} on {self.date.strftime('%Y-%m-%d') if self.date else 'Unknown'}: "
                 f"{self.rating}★ - {self.comment[:50]}{'...' if len(self.comment) > 50 else ''}")

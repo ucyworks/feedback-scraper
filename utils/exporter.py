@@ -8,7 +8,7 @@ import json
 import csv
 from typing import List
 
-from feedback_scraper.models.review import Review
+from models.review import Review
 
 def ensure_directory_exists(file_path: str) -> None:
     """

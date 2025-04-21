@@ -7,10 +7,15 @@ import re
 from datetime import datetime
 from typing import List, Optional
 import locale
-
+import sys
+import os
 from bs4 import BeautifulSoup
 
-from feedback_scraper.models.review import Review
+# Add the parent directory to sys.path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# from feedback_scraper.models.review import Review
+from models.review import Review
 
 # Set locale for date parsing (Turkish)
 try:
@@ -64,19 +69,23 @@ def count_stars(stars_div) -> int:
             count += 1
     return count
 
-def extract_reviews_from_html(file_path: str) -> List[Review]:
+def extract_reviews_from_html(input_source: str, is_file_path: bool = True) -> List[Review]:
     """
-    Extract reviews from an HTML file.
+    Extract reviews from an HTML file or HTML content.
     
     Args:
-        file_path: Path to the HTML file containing reviews
+        input_source: Path to the HTML file or HTML content string
+        is_file_path: Whether input_source is a file path (True) or HTML content (False)
     
     Returns:
         A list of Review objects
     """
-    # Read the HTML file
-    with open(file_path, 'r', encoding='utf-8') as file:
-        html_content = file.read()
+    # Read the HTML file or use HTML content directly
+    if is_file_path:
+        with open(input_source, 'r', encoding='utf-8') as file:
+            html_content = file.read()
+    else:
+        html_content = input_source
     
     # Parse HTML with BeautifulSoup
     soup = BeautifulSoup(html_content, 'html.parser')
